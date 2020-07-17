@@ -9,6 +9,7 @@ RUN set -x \
   && wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-alpine-linux-amd64-v0.6.1.tar.gz \
   && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-v0.6.1.tar.gz \
   && rm dockerize-alpine-linux-amd64-v0.6.1.tar.gz \
+  && mix archive.install hex phx_new --force \
   && rm -rf /var/cache/apk/*
 
 USER default
