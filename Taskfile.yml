@@ -1,0 +1,95 @@
+version: '2.6'
+
+
+vars:
+  PHOENIX_VERSION: 1.10.3
+  DOCKERIZE_VERSION: v0.6.1
+  IMAGE_VERSION: 20.07.16
+  IMAGE_NAME: chrisgarrett/pheonix-dev
+
+
+silent: true
+
+
+tasks:
+
+  default:
+    cmds:
+      - task -l
+
+  build:
+    desc: Build the image
+    deps: [prep]
+    cmds:
+      - docker build --rm=true -t {{.IMAGE_NAME}}:{{.IMAGE_VERSION}} .
+
+  run:
+    desc: Run the image once 
+    cmds:
+      - docker run --rm -it {{.IMAGE_NAME}}:{{.IMAGE_VERSION}}
+
+  sh:
+    desc: Launch a shell interactively
+    cmds:
+      - docker run --rm -it {{.IMAGE_NAME}}:{{.IMAGE_VERSION}} ash
+
+  shroot:
+    desc: Launch a shell interactively as root
+    cmds:
+      - docker run --rm -it -u root {{.IMAGE_NAME}}:{{.IMAGE_VERSION}} bash
+
+  prep:
+    desc: Generates Dockerfile/Readme for this repo
+    cmds:
+      - echo "{{.DOCKER_TEMPLATE}}" > Dockerfile
+      - echo "{{.README_TEMPLATE}}" > README.md
+    sources:
+      - ./Taskfile.yml
+    generates:
+      - Dockerfile
+      - README.md
+    method: checksum      
+    vars:
+      DOCKER_TEMPLATE: |
+        FROM bitwalker/alpine-elixir-phoenix:{{.PHOENIX_VERSION}}
+        LABEL maintainer=\"Chris Garrett (https://github.com/chris-garrett/docker-phoenix-dev)\"
+        LABEL description=\"Phoenix {{.IMAGE_VERSION}} Development Image\"
+
+        USER root
+
+        RUN set -x \\
+          && update-ca-certificates --fresh \\
+          && wget https://github.com/jwilder/dockerize/releases/download/{{.DOCKERIZE_VERSION}}/dockerize-alpine-linux-amd64-{{.DOCKERIZE_VERSION}}.tar.gz \\
+          && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-{{.DOCKERIZE_VERSION}}.tar.gz \\
+          && rm dockerize-alpine-linux-amd64-{{.DOCKERIZE_VERSION}}.tar.gz \\
+          && rm -rf /var/cache/apk/*
+
+        USER default
+      README_TEMPLATE: |
+        # docker-phoenix-dev
+
+        * Phoenix {{.IMAGE_VERSION}}
+
+        ## Versions
+        - Phoenix {{.PHOENIX_VERSION}} - https://phoenixframework.org/
+        - Dockerize {{.DOCKERIZE_VERSION}} - https://github.com/jwilder/dockerize
+
+        ## Usage
+
+        *nix
+        \`\`\`
+        docker run --rm -it \\
+          -v \${pwd}/src:/opt/app \\
+          {{.IMAGE_NAME}}:{{.IMAGE_VERSION}} 
+        \`\`\`
+
+        Windows cmd
+        \`\`\`
+        docker run --rm -it -v %cd%/src:/opt/app {{.IMAGE_NAME}}:{{.IMAGE_VERSION}} 
+        \`\`\`
+
+     
+        ## Credits
+
+        Used Paul Schoenfelder's (bitwalker) work as a launch point https://hub.docker.com/r/bitwalker/alpine-elixir-phoenix
+
