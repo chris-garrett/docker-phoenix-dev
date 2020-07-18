@@ -5,7 +5,7 @@ vars:
   PHOENIX_VERSION: 1.10.3
   DOCKERIZE_VERSION: v0.6.1
   IMAGE_VERSION: 20.07.16
-  IMAGE_NAME: chrisgarrett/pheonix-dev
+  IMAGE_NAME: chrisgarrett/phoenix-dev
 
 
 silent: true
@@ -62,6 +62,7 @@ tasks:
           && wget https://github.com/jwilder/dockerize/releases/download/{{.DOCKERIZE_VERSION}}/dockerize-alpine-linux-amd64-{{.DOCKERIZE_VERSION}}.tar.gz \\
           && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-{{.DOCKERIZE_VERSION}}.tar.gz \\
           && rm dockerize-alpine-linux-amd64-{{.DOCKERIZE_VERSION}}.tar.gz \\
+          && mix archive.install hex phx_new --force \\
           && rm -rf /var/cache/apk/*
 
         USER default

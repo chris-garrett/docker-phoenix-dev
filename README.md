@@ -12,12 +12,12 @@
 ```
 docker run --rm -it \
   -v ${pwd}/src:/opt/app \
-  chrisgarrett/pheonix-dev:20.07.16 
+  chrisgarrett/phoenix-dev:20.07.16 
 ```
 
 Windows cmd
 ```
-docker run --rm -it -v %cd%/src:/opt/app chrisgarrett/pheonix-dev:20.07.16 
+docker run --rm -it -v %cd%/src:/opt/app chrisgarrett/phoenix-dev:20.07.16 
 ```
 
 
