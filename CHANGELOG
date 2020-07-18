@@ -1,0 +1,3 @@
+20.07.18
+* add explicit non-root user
+* update permissions for /opt/hex and /opt/app
