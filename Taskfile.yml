@@ -4,7 +4,7 @@ version: '2.6'
 vars:
   PHOENIX_VERSION: 1.10.3
   DOCKERIZE_VERSION: v0.6.1
-  IMAGE_VERSION: 20.07.16
+  IMAGE_VERSION: 20.07.18
   IMAGE_NAME: chrisgarrett/phoenix-dev
 
 
@@ -63,9 +63,11 @@ tasks:
           && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-{{.DOCKERIZE_VERSION}}.tar.gz \\
           && rm dockerize-alpine-linux-amd64-{{.DOCKERIZE_VERSION}}.tar.gz \\
           && mix archive.install hex phx_new --force \\
+          && adduser -s /bin/bash -D sprout \\
+          && chown -R sprout:sprout /opt/app /opt/hex /home/sprout \\
           && rm -rf /var/cache/apk/*
 
-        USER default
+        USER sprout
       README_TEMPLATE: |
         # docker-phoenix-dev
 
