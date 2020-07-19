@@ -1,6 +1,6 @@
 # docker-phoenix-dev
 
-* Phoenix 20.07.18
+* Phoenix 20.07.19
 
 ## Versions
 - Phoenix 1.10.3 - https://phoenixframework.org/
@@ -12,12 +12,12 @@
 ```
 docker run --rm -it \
   -v ${pwd}/src:/opt/app \
-  chrisgarrett/phoenix-dev:20.07.18 
+  chrisgarrett/phoenix-dev:20.07.19 
 ```
 
 Windows cmd
 ```
-docker run --rm -it -v %cd%/src:/opt/app chrisgarrett/phoenix-dev:20.07.18 
+docker run --rm -it -v %cd%/src:/opt/app chrisgarrett/phoenix-dev:20.07.19 
 ```
 
 
